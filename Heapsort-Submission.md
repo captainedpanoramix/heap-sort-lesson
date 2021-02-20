@@ -154,6 +154,15 @@ fetcher=genFetchMaxHeap(a,15)
 for i in range(15):
 	print(next(fetcher))
 ```
+
+## Computational Complexity
+The overall complexity is O(n log n). Surprisingly enough, the createMaxHeap function is only O(n). The reason is that each node is inspected once for each step away from the bottom. Therefore, the leaves that arrive at the bottom (half of the nodes) are only swapped once, their parents (one quarter of the nodes) are swapped twice, etc. Since the sum of n/2 + n/4 + n/8 ... = n, createMaxHeap is O(n).
+
+Actually sorting (fetchMaxHeap) is O(n log n), as every iteration of the loop removes the root and breaks the heap invariant on the root of the tree. Consequent swaps are approximately the entire depth of the tree (log n). 
+
+As a result, even the worst case input causes O(n) + O(n log n) = O(n log n).
+
+
 ## Takeaways
 This code is simple, but not easy. It exemplifies the need to comment strategies and non-obvious uses (such as Floyd's ingenious sharing of the list's space between the incrementally shrinking tree and growing sorted list). 
 
