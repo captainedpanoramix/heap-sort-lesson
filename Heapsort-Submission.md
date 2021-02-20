@@ -31,7 +31,7 @@ If a parent node is at index *i*, the left child is at *2*i + 1*, right child at
 Notice the children of a parent are adjacent to each other.	
 
 
-### Heap constraint / invariant
+### Heap invariant
 The heap invariant is that each node in the tree must have a higher value than any of its children. 
 Notice that values close together are NOT necessarily close together in the tree.
 
@@ -109,7 +109,7 @@ Once createMaxHeap is complete, the array *a* represents a binary tree that obey
 
 
 
-## Fetching the items in order
+## Phase 2 -- Sorting and fetching the items in order
 Here are two ways to fetch the items in descending order. The original optimal form of this algorithm, invented by R. W. Floyd, has the beautiful property that it iteratively shrinks the tree by removing its largest values and placing them at the end of the array. In other words, it can sort the array in place, in ascending order. Once it has treated the entire tree, the items fill the list, in ascending order. This allows the list to be accessed in either ascending or descending order. Also, numerical values can be divided into quartiles, deciles, percentiles, etc. 
 
 Another approach, inspired by Python’s generator concept, iteratively removes the values in descending order and returns them, one at a time, to a calling routine.
@@ -151,3 +151,9 @@ fetcher=genFetchMaxHeap(a,15)
 for i in range(15):
 	print(next(fetcher))
 ```
+## Takeaways
+This code is simple, but not easy. It exemplifies the need to comment strategies and non-obvious uses (such as Floyd's ingenious sharing of the list's space between the incrementally shrinking tree and growing sorted list). 
+
+The key concept is the **heap invariant**. The key routine is *swapAndDrop*, which is the meat of both the creation routine (*createMaxHeap*) and the fetching routine (*fetchMaxHeap*). 
+
+By the way, ask yourself "which lines of code have to be changed to make it sort descending rather than ascending?" The answer is 2. 
