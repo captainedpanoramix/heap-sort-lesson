@@ -11,15 +11,21 @@ Store the items as a binary tree in a linear array, root first, first generation
 |--------:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----|
 |Pedigree| A   | AA  | AB  | AAA | AAB | ABA | ABB | AAAA| AAAB| AABA| AABB| ABAA| ABAB| ABBA| ABBB|
 |--------:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----|
-|value   |  17 |  43 |  12 |  19 |  13 |  28 |   7 |  18 |  24 |   9 |  15 |  26 |  31 |   2 |  11 |
+|value   |  15 |  18 |  31 |  24 |  43 |  12 |  11 |  26 |  19 |   9 |  13 |  17 |  28 |   2 |  7  
 |--------:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----|
+
+viewed as a tree:
+                              15
+               18 --------------------------- 31
+        24 ----------- 43              12 ----------- 11               
+    26 ---- 19      9 ---- 13      17 ---- 28      2 ---- 7
 ```
 
 #### Location of parent
 If child node is at index *i*, the parent is at *floor((i-1)/2)*. For example, item 10 (AABB, with value 15) has its parent at *floor((10-1)/2)* = *floor(9/2)* = 4 with pedigree AAB.
 
 #### Location of child
-If a parent node is at index *i*, the left child is at *2*i + 1*, right child at *2*i + 2*. For example, the node at index *2* (AA, with value 43) has children 2*2+1=5 (ABA) and 2*2+2=6(ABB) .
+If a parent node is at index *i*, the left child is at *2*i + 1*, right child at *2*i + 2*. For example, the node at index *2* (AA, with value 31 as children 2*2+1=5 (ABA) and 2*2+2=6(ABB) .
 
 
 Notice the children of a parent are adjacent to each other.	
@@ -37,11 +43,17 @@ Because this array properly obeys the heap invariant, it qualifies as a heap.
 |--------:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----|
 |Pedigree| A   | AA  | AB  | AAA | AAB | ABA | ABB | AAAA| AAAB| AABA| AABB| ABAA| ABAB| ABBA| ABBB|
 |--------:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----|
-| value  |  43 |  26 |  31 |  24 |  15 |  28 |  11 |  18 |  19 |  9  | 13  | 17  |  12 |   2 |  7  |
+| value  |  43 |  26 |  31 |  24 |  18 |  28 |  11 |  15 |  19 |  9  | 13  | 17  |  12 |  2  |  7  |
 |--------:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----:-----|
+viewed as a tree:
+                              43
+               26 --------------------------- 31
+        24 ----------- 18              28 ----------- 11               
+    15 ---- 19      9 ---- 13      17 ---- 12      2 ---- 7
+
 ```
 
-For example, see that A contains 43, its children AA and AB contain 26 and 31. Their children AAA and AAB are 24 and 15, and ABA and ABB are 12 and 11, and so on.
+For example, see that A contains 43, its children AA and AB contain 26 and 31. Their children AAA and AAB are 24 and 18, and ABA and ABB are 28 and 11, and so on.
 
 ## First phase--Constructing a heap (createMaxHeap)
 
@@ -92,15 +104,15 @@ Procedure createMaxHeap ( a, count)
 		swapAndDrop( a, start, count-1)
 		start = start -1
 ```
-Once createMaxHeap is complete, the array a represents a binary tree that behaves the heap invariant.
+Once createMaxHeap is complete, the array *a* represents a binary tree that obeys the heap invariant.
 
 
 
 
 ## Fetching the items in order
-Here are two ways to fetch the items in descending order. The original optimal form of this algorithm, invented by R. W. Floyd, has the beautiful property that it iteratively shrinks the tree by removing its largest values and placing them at the end of the array. In other words, it can sort the array in place, in ascending order. Once it has treated the entire tree, the items are now fill the list, in ascending order. This allows the list to be accessed in either ascending or descending order. Also, numerical values can be divided into quartiles, deciles, percentiles, etc. 
+Here are two ways to fetch the items in descending order. The original optimal form of this algorithm, invented by R. W. Floyd, has the beautiful property that it iteratively shrinks the tree by removing its largest values and placing them at the end of the array. In other words, it can sort the array in place, in ascending order. Once it has treated the entire tree, the items fill the list, in ascending order. This allows the list to be accessed in either ascending or descending order. Also, numerical values can be divided into quartiles, deciles, percentiles, etc. 
 
-Another approach, inspired by Python’s generator concept, iteratively removes the values from largest to smallest and returns them, one at a time, to a calling routine.
+Another approach, inspired by Python’s generator concept, iteratively removes the values in descending order and returns them, one at a time, to a calling routine.
 Both methods use the swapAndDrop routine.
 The algorithm maintains the shrinking tree in lower cells, and grows the sorted list in higher cells. At the beginning, the tree occupies all *count-1* cells, and there is no sorted list. The function swaps the largest value (located in *a[0]*) with the last leaf in the tree (located in *a[count-1]*). This starts the sorted list and shrinks the tree by the removal of that last leaf. By swapping it into *a[0]*, the function breaks the heap invariant, so it calls *swapAndDrop* to repair the tree by sliding the low value downward and the highest value upward. Now, *a[0]* is the highest remaining value, and the last leaf in the tree is located in *a[count-2]*. This swapping and *swapAndDropp*ing proceeds until the tree portion is shrunk to nothing, and the ascending sorted items fill the array.
 
