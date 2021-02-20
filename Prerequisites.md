@@ -4,4 +4,6 @@ To complete this, learners should have knowledge of the following Python concept
 
 * Control flow
 * Lists
-* Generators / Iterators
+
+and will learn an example of 
+* Generator / Iterator
