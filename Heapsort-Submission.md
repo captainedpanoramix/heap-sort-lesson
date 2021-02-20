@@ -58,7 +58,8 @@ For example, see that A contains 43, its children AA and AB contain 26 and 31. T
 ## First phase--Constructing a heap (createMaxHeap)
 
 The function *createMaxHeap* takes a list, and changes the list to represent a binary tree that obeys the heap invariant. Its main subfunction imposes the heap invariant on all of the parent nodes in the tree. Let’s understand it first.
-The approach uses a function *swapAndDrop* that imposes the heap invariant on all the nodes. It operates bottom-up. That is, it is called on bottom level parent nodes first, so that every time it is called for a node, it can assume that the node’s children’s trees already obey the invariant. The function does whatever is necessary to ensure that the node itself also obeys the invariant.
+
+The approach uses a function *swapAndDrop* operating bottom-up. That is, it is called on bottom level parent nodes first, so that every time it is called for a node, it can assume that the node’s children’s trees already obey the invariant. The function does whatever is necessary to ensure that the node itself also obeys the invariant.
 
 
 What is the key operation? 
@@ -68,6 +69,8 @@ What is the key operation?
 Moving the larger child to the node’s position is consistent with the heap invariant, because it is guaranteed to be larger than both of its children.
 
 However, moving the (smaller) node to the child’s position may break the invariant, because this lower value might **no longer** be larger than its children. As a result, if swapping happens, the routine needs to drop down and inspect the child as well. Therefore, this routine is called *swapAndDrop*.
+
+
 While this functional description is complete, there is more bookkeeping to do. Since the routine can loop downward in the tree, how and when does it stop?
 It will stop when the value of *node* is indeed larger than that of its children, or if it doesn’t even have children. There are no children if the *iLeftChild* or *iRightChild* functions return a value greater than the *end* argument.
 
@@ -110,7 +113,7 @@ Once createMaxHeap is complete, the array *a* represents a binary tree that obey
 
 
 ## Phase 2 -- Sorting and fetching the items in order
-Here are two ways to fetch the items in descending order. The original optimal form of this algorithm, invented by R. W. Floyd, has the beautiful property that it iteratively shrinks the tree by removing its largest values and placing them at the end of the array. In other words, it can sort the array in place, in ascending order. Once it has treated the entire tree, the items fill the list, in ascending order. This allows the list to be accessed in either ascending or descending order. Also, numerical values can be divided into quartiles, deciles, percentiles, etc. 
+Here are two ways to fetch the items in descending order. The original optimal form of this algorithm, invented by R. W. Floyd, has the beautiful property that one call to the function iteratively shrinks the tree by removing its largest values and placing them at the end of the array. In other words, it can sort the array in place, in ascending order. Once it has treated the entire tree, the items fill the list, in ascending order. This allows the list to be accessed in either ascending or descending order. Also, numerical values can be divided into quartiles, deciles, percentiles, etc. 
 
 Another approach, inspired by Python’s generator concept, iteratively removes the values in descending order and returns them, one at a time, to a calling routine.
 
