@@ -113,7 +113,9 @@ Once createMaxHeap is complete, the array *a* represents a binary tree that obey
 Here are two ways to fetch the items in descending order. The original optimal form of this algorithm, invented by R. W. Floyd, has the beautiful property that it iteratively shrinks the tree by removing its largest values and placing them at the end of the array. In other words, it can sort the array in place, in ascending order. Once it has treated the entire tree, the items fill the list, in ascending order. This allows the list to be accessed in either ascending or descending order. Also, numerical values can be divided into quartiles, deciles, percentiles, etc. 
 
 Another approach, inspired by Python’s generator concept, iteratively removes the values in descending order and returns them, one at a time, to a calling routine.
+
 Both methods use the swapAndDrop routine.
+
 The algorithm maintains the shrinking tree in lower cells, and grows the sorted list in higher cells. At the beginning, the tree occupies all *count-1* cells, and there is no sorted list. The function swaps the largest value (located in *a[0]*) with the last leaf in the tree (located in *a[count-1]*). This starts the sorted list and shrinks the tree by the removal of that last leaf. By swapping it into *a[0]*, the function breaks the heap invariant, so it calls *swapAndDrop* to repair the tree by sliding the low value downward and the highest value upward. Now, *a[0]* is the highest remaining value, and the last leaf in the tree is located in *a[count-2]*. This swapping and *swapAndDropp*ing proceeds until the tree portion is shrunk to nothing, and the ascending sorted items fill the array.
 
 ### Floyd's algorithm
@@ -124,7 +126,7 @@ Procedure fetchMaxHeap( a, count )
 	While end > 0
 		Swap a[end] with a[0]
 		End = end - 1
-		swapAndDrop( a, 0, end) # we destroyed the invariance, so correct it, which will locate the highest remaining value and place it in a(0)
+		swapAndDrop( a, 0, end) # we destroyed the invariance, so correct it, which will locate the highest remaining value and place it in a[0]
 	# At this point, the entire array is in ascending order. Play with it as you wish!
 ```
 
@@ -140,7 +142,7 @@ Procedure genFetchMaxHeap( a, count ) # the iterator for a heap
 		yield a[0]
 		Swap a[end] with a[0]
 		end = end - 1
-		swapAndDrop( a, 0, end) # we destroyed the invariance, so correct it, which will locate the highest remaining value and place it in a(0)
+		swapAndDrop( a, 0, end) # we destroyed the invariance, so correct it, which will locate the highest remaining value and place it in a[0]
 	# At this point, the entire array is in ascending order. Play with it as you wish!
 ```
 #### To use this generator
